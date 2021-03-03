@@ -1,0 +1,22 @@
+from scipy.stats import t
+dev_sample = float(input("Insert the deviation of the sample\t"))
+sample_num = float(input("Insert the quantity of elements of the sample\t"))
+
+sample_error = float(input("Insert the error of the sample\t"))
+alfa_always = 0.1
+
+dof = sample_num-1
+var_k = 1-(alfa_always/2)
+sample_error_bis = sample_error*0.85
+count=0
+sample_num = sample_num*2
+while count <= 5:
+    critical_value = t.ppf(var_k,dof)
+    sample_num = ((critical_value * dev_sample )/ sample_error_bis)**2
+    dof = sample_num-1
+    print(sample_num)
+    count += 1
+    print(count)
+
+
+print(f'You need to analize {round(sample_num)} samples')
