@@ -1,0 +1,14 @@
+from scipy.stats import t
+
+def tst(sample_num,sample_error,dev_sample,alfa_always):
+    dof = sample_num - 1
+    var_k = 1 - (alfa_always / 2)
+    sample_error_bis = sample_error * 0.85
+    sample_num = sample_num * 2
+    count=0
+    while count <= 5:
+        critical_value = t.ppf(var_k,dof)
+        sample_num = ((critical_value * dev_sample )/ sample_error_bis)**2
+        dof = sample_num-1
+        count += 1
+    print(f'You need to analize {round(sample_num)} samples')
