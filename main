@@ -1,11 +1,29 @@
-from function import tst
+from scipy.stats import t
 
-dev_sample = float(input("Insert the deviation of the sample\t"))
-sample_num = float(input("Insert the quantity of elements of the sample\t"))
 
-sample_error = float(input("Insert the error of the sample\t"))
-alfa_always =float(input("Insert the alfa\t"))
-    
+def tst(sample_num,sample_error,dev_sample,alfa):
+    dof = sample_num - 1
+    var_k = 1 - (alfa / 2)
+    sample_error_bis = sample_error * 0.85
+    sample_num = sample_num * 2
+    count=0
+    while count <= 5:
+        critical_value = t.ppf(var_k,dof)
+        sample_num = ((critical_value * dev_sample )/ sample_error_bis)**2
+        dof = sample_num-1
+        count += 1
+    print(f'You need to analize {round(sample_num)} samples to diminish the error in a 15%')
 
-tst(sample_num,sample_error,dev_sample,alfa_always)
 
+def sample_error(dev_sample,sample_num,alfa):
+    var_k = 1 - (alfa / 2)
+    dof = sample_num - 1
+    sample_error = t.ppf(var_k,dof) * (dev_sample/(sample_num**0.5))
+    return sample_error
+
+def inference(sample_error,mean_sample,alfa):
+    lim_1= mean_sample - sample_error
+    lim_2= mean_sample + sample_error
+    trust_dg=(1-alfa)*100
+
+    print(f"You will be selling between {lim_1} and {lim_2} units with a trust degree of {trust_dg}%")
